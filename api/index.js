@@ -1,17 +1,32 @@
-const apiRouter = require('express').Router();
+const apiRouter = require("express").Router();
 
-apiRouter.get('/', (req, res, next) => {
+// API Home
+apiRouter.get("/", (req, res, next) => {
   res.send({
-    message: 'API is under construction!',
+    message: "API is under construction!",
   });
 });
 
-apiRouter.get('/health', (req, res, next) => {
+// API Health check
+apiRouter.get("/health", (req, res, next) => {
   res.send({
     healthy: true,
+    content: "Server is healthy!",
   });
 });
 
-// place your routers here
+// ROUTE: Login
+apiRouter.get("/login", (req, res, next) => {
+  res.send({
+    message: "User Login!",
+  });
+});
+
+// ROUTE: Sign Up
+apiRouter.get("/signup", (req, res, next) => {
+  res.send({
+    message: "Sign Up!",
+  });
+});
 
 module.exports = apiRouter;
