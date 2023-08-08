@@ -14,6 +14,7 @@ async function buildTables() {
       console.log("Starting to drop tables...");
 
       await client.query(`
+      DROP TABLE IF EXISTS actionfigures;
       DROP TABLE IF EXISTS users;
     `);
 
@@ -35,8 +36,17 @@ async function buildTables() {
         password varchar(255) NOT NULL
         );
       `);
+
+      await client.query(`
+        CREATE TABLE actionfigures (
+        id SERIAL PRIMARY KEY,
+        name varchar(255) UNIQUE NOT NULL,
+        description TEXT NOT NULL
+        price DECIMAL(10,2)
+        );
+      `);
     } catch (error) {
-      console.log("Error creating tables!");
+      console.log("Error building tables!");
       throw error;
     }
   } catch (error) {
@@ -57,6 +67,13 @@ async function populateInitialData() {
       { username: "elise", password: "elise321" },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
+
+    const productsToCreate = [
+      { username: "bob", password: "bob99" },
+      { username: "kenny", password: "kenny123" },
+      { username: "elise", password: "elise321" },
+    ];
+    const products = await Promise.all(usersToCreate.map(createProduct));
 
     console.log("Users created:");
     console.log(users);

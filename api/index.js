@@ -29,4 +29,11 @@ apiRouter.get("/signup", (req, res, next) => {
   });
 });
 
+// ROUTE: My Cart
+apiRouter.get("/cart", (req, res, next) => {
+  res.send({
+    message: "User's Cart!",
+  });
+});
+
 module.exports = apiRouter;
