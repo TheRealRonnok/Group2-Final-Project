@@ -41,10 +41,32 @@ async function buildTables() {
         CREATE TABLE actionfigures (
         id SERIAL PRIMARY KEY,
         name varchar(255) UNIQUE NOT NULL,
-        description TEXT NOT NULL
+        description TEXT NOT NULL,
         price DECIMAL(10,2)
         );
       `);
+
+      await client.query(`
+        CREATE TABLE userorders (
+          id SERIAL PRIMARY KEY,
+          "userId" INTEGER REFERENCES users(id),
+          "productId" INTEGER REFERENCES actionfigures(id),
+          quantity INTEGER NOT NULL DEFAULT 0,
+          status varchar(255) DEFAULT 'created',
+          "datePlaced" DATE DEFAULT CURRENT_DATE
+          );
+        `);
+
+      await client.query(`
+        CREATE TABLE guestorders (
+          id SERIAL PRIMARY KEY,
+          "guestId" INTEGER REFERENCES users(id),
+          "productId" INTEGER REFERENCES actionfigures(id),
+          quantity INTEGER NOT NULL DEFAULT 0,
+          status varchar(255) DEFAULT 'created',
+          "datePlaced" DATE DEFAULT CURRENT_DATE
+          );
+          `);
     } catch (error) {
       console.log("Error building tables!");
       throw error;
