@@ -41,7 +41,7 @@ async function buildTables() {
         CREATE TABLE actionfigures (
         id SERIAL PRIMARY KEY,
         name varchar(255) UNIQUE NOT NULL,
-        description TEXT NOT NULL
+        description TEXT NOT NULL,
         price DECIMAL(10,2)
         );
       `);
