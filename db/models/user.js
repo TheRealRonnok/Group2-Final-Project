@@ -1,16 +1,6 @@
 // grab our db client connection to use with our adapters
 const client = require("../client");
 
-module.exports = {
-  // add your database adapter fns here
-  createUser,
-  getAllUsers,
-  getUserById,
-  getUserByUsername,
-  updateUser,
-  deleteUser,
-};
-
 // CREATE USER FUNCTION
 async function createUser({ username, password }) {
   try {
@@ -31,7 +21,7 @@ async function createUser({ username, password }) {
       [username, password]
     );
 
-    user.password = null;
+    // user.password = null;
 
     return user;
   } catch (error) {
@@ -177,3 +167,13 @@ async function deleteUser(id) {
     throw error;
   }
 }
+
+module.exports = {
+  // add your database adapter fns here
+  createUser,
+  getAllUsers,
+  getUserById,
+  getUserByUsername,
+  updateUser,
+  deleteUser,
+};

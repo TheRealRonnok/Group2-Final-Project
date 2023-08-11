@@ -14,8 +14,8 @@ if (process.env.CI) {
   client = new Client({
     host: "localhost",
     port: 5432,
-    user: `postgres`,
-    password: `password`,
+    user: "postgres",
+    password: "password",
     database: "univ-boilerplate",
   });
 } else {
