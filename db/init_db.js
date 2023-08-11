@@ -4,6 +4,8 @@ const {
   // for example, User
 } = require("./");
 
+const { createUser } = require("./models/user.js");
+
 async function buildTables() {
   try {
     client.connect();
@@ -14,6 +16,8 @@ async function buildTables() {
       console.log("Starting to drop tables...");
 
       await client.query(`
+      DROP TABLE IF EXISTS guestorders;
+      DROP TABLE IF EXISTS userorders;
       DROP TABLE IF EXISTS actionfigures;
       DROP TABLE IF EXISTS users;
     `);
@@ -36,6 +40,7 @@ async function buildTables() {
         password varchar(255) NOT NULL
         );
       `);
+      console.log("Created users table.");
 
       await client.query(`
         CREATE TABLE actionfigures (
@@ -45,6 +50,7 @@ async function buildTables() {
         price DECIMAL(10,2)
         );
       `);
+      console.log("Created actionfigures table.");
 
       await client.query(`
         CREATE TABLE userorders (
@@ -56,6 +62,7 @@ async function buildTables() {
           "datePlaced" DATE DEFAULT CURRENT_DATE
           );
         `);
+      console.log("Created userorders table.");
 
       await client.query(`
         CREATE TABLE guestorders (
@@ -67,8 +74,7 @@ async function buildTables() {
           "datePlaced" DATE DEFAULT CURRENT_DATE
           );
           `);
-
-        
+      console.log("Created guestorders table.");
     } catch (error) {
       console.log("Error building tables!");
       throw error;
@@ -92,12 +98,12 @@ async function populateInitialData() {
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
 
-    const productsToCreate = [
-      { username: "bob", password: "bob99" },
-      { username: "kenny", password: "kenny123" },
-      { username: "elise", password: "elise321" },
-    ];
-    const products = await Promise.all(usersToCreate.map(createProduct));
+    // const productsToCreate = [
+    //   { username: "bob", password: "bob99" },
+    //   { username: "kenny", password: "kenny123" },
+    //   { username: "elise", password: "elise321" },
+    // ];
+    // const products = await Promise.all(usersToCreate.map(createProduct));
 
     console.log("Users created:");
     console.log(users);
