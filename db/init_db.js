@@ -67,6 +67,8 @@ async function buildTables() {
           "datePlaced" DATE DEFAULT CURRENT_DATE
           );
           `);
+
+        
     } catch (error) {
       console.log("Error building tables!");
       throw error;
