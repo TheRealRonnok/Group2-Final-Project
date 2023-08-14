@@ -1,9 +1,32 @@
 const client = require("../client");
 
 module.exports = {
-    getAllFigures,
-    getFiguresByUser,
+  createActionFigure,
+  getAllFigures,
+  getFiguresByUser,
 };
+
+async function createActionFigure({ name, description, price }) {
+  try {
+    console.log("Inside createActionFigure");
+    const {
+      rows: [product],
+    } = await client.query(
+      `
+        INSERT INTO actionfigures(name, description, price) 
+        VALUES($1, $2, $3) 
+        ON CONFLICT (name) DO NOTHING 
+        RETURNING *;
+      `,
+      [name, description, price]
+    );
+
+    return product;
+  } catch (error) {
+    console.log("Error creating product.");
+    throw error;
+  }
+}
 
 async function getAllFigures() {
   try {

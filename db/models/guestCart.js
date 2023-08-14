@@ -1,15 +1,7 @@
-
 const client = require("../client");
 
-
-
 // create guest cart items
-async function createGuestCartItem({
-  productID,
-  quantity,
-  status,
-  date,
-}) {
+async function createGuestCartItem({ productID, quantity, status, date }) {
   try {
     console.log("Inside createGuestCartItem.");
     const {
@@ -20,7 +12,7 @@ async function createGuestCartItem({
         VALUES($1, $2, $3, $4)
         RETURNING *;
       `,
-      [ productID, quantity, status, date]
+      [productID, quantity, status, date]
     );
 
     return guestCartItem;
@@ -71,8 +63,6 @@ async function deleteGuestCartItem(productID) {
     throw error;
   }
 }
-
-
 
 module.exports = {
   createGuestCartItem,
