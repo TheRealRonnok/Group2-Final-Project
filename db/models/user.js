@@ -35,21 +35,21 @@ async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
   try {
     console.log("Inside getAllUsers.");
-    const { user } = await client.query(
+    const { rows: users } = await client.query(
       `
         SELECT *
         FROM users;
       `
     );
 
-    if (!user) {
+    if (!users) {
       console.log("No user found - Inside getAllUsers.");
       return null;
     }
 
-    user.password = null;
+    users.password = null;
 
-    return user;
+    return users;
   } catch (error) {
     console.log("Error getting All Users.");
     throw error;

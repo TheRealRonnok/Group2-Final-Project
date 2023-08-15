@@ -15,25 +15,12 @@ apiRouter.get("/health", (req, res, next) => {
   });
 });
 
-// ROUTE: Login
-apiRouter.get("/login", (req, res, next) => {
-  res.send({
-    message: "User Login!",
-  });
-});
+// Users Route
+const userRouter = require("./users");
+apiRouter.use("/users", userRouter);
 
-// ROUTE: Sign Up
-apiRouter.get("/signup", (req, res, next) => {
-  res.send({
-    message: "Sign Up!",
-  });
-});
-
-// ROUTE: My Cart
-apiRouter.get("/cart", (req, res, next) => {
-  res.send({
-    message: "User's Cart!",
-  });
-});
+// Products Route
+const productRouter = require("./products");
+apiRouter.use("/products", productRouter);
 
 module.exports = apiRouter;
