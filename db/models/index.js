@@ -6,6 +6,7 @@ module.exports = {
   ...require("./user"),
   ...require("./actionFigure"),
   ...require("./userCart"),
+  ...require("./guestCart"),
 };
 
 // then, in your API, you'll require the appropriate model
