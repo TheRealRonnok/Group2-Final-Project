@@ -4,7 +4,12 @@ const {
   // for example, User
 } = require("./");
 
+// Import Adapter Methods for Users
 const { createUser } = require("./models/user.js");
+// Import Adapter Methods for Action Figures
+const { createActionFigure } = require("./models/actionFigure.js");
+// Import Adapter Methods for User Cart
+const {} = require("./models/userCart.js");
 
 async function buildTables() {
   try {
@@ -92,22 +97,45 @@ async function populateInitialData() {
 
     // Create Initial User Data
     const usersToCreate = [
-      { username: "bob", password: "bob99" },
-      { username: "kenny", password: "kenny123" },
-      { username: "elise", password: "elise321" },
+      { username: "tstark", password: "irule3000" },
+      { username: "bpanther", password: "wakanda4ever" },
+      { username: "murica", password: "freedom123" },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
 
-    // const productsToCreate = [
-    //   { username: "bob", password: "bob99" },
-    //   { username: "kenny", password: "kenny123" },
-    //   { username: "elise", password: "elise321" },
-    // ];
-    // const products = await Promise.all(usersToCreate.map(createProduct));
-
+    // Display Initial Users
     console.log("Users created:");
     console.log(users);
     console.log("Finished creating users!");
+
+    // Create Initial Products
+    const productsToCreate = [
+      {
+        name: "ironman",
+        description:
+          "Iron Man in all his glory! Approximately 10 inches tall. (Not capable of actual flight)",
+        price: 79.99,
+      },
+      {
+        name: "blackpanther",
+        description: "From Avengers: Endgame. Approximately 10 inches tall.",
+        price: 89.99,
+      },
+      {
+        name: "captamerica",
+        description:
+          "The perfect addition to anyone's July 4th collection! Approximately 11 inches tall.",
+        price: 84.99,
+      },
+    ];
+    const products = await Promise.all(
+      productsToCreate.map(createActionFigure)
+    );
+
+    // Display Initial Products
+    console.log("Products created:");
+    console.log(products);
+    console.log("Finished creating products!");
   } catch (error) {
     console.error("Error creating users!");
     throw error;
