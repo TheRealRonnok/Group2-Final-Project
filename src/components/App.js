@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 // you can think of that directory as a collection of api adapters
 // where each adapter fetches specific info from our express server's /api route
 import { getAPIHealth } from "../axios-services";
-import "../style/App.css";
+
 
 const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
@@ -14,7 +14,7 @@ const App = () => {
     // invoke the adapter, await the response, and set the data
     const getAPIStatus = async () => {
       const { healthy } = await getAPIHealth();
-      setAPIHealth(healthy ? "API is up! :D" : "API is down D:");
+      setAPIHealth(healthy ? "API is up!" : "API is down ");
     };
 
     // second, after you've defined your getter above
@@ -22,12 +22,11 @@ const App = () => {
     getAPIStatus();
   }, []);
 
+
   return (
-    <div className="app-container">
-      <h1>Welcome to Team Iron Man!</h1>
-      <p>API Status: {APIHealth}</p>
-    </div>
+    <h1 className="text-3xl font-bold underline bg-red-600">Hello world!</h1>
   );
-};
+}
+
 
 export default App;
