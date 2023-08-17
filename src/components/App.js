@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 // where each adapter fetches specific info from our express server's /api route
 import { getAPIHealth } from "../axios-services";
 
+import Navbar from "./Navbar";
 
 const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
@@ -23,8 +24,17 @@ const App = () => {
   }, []);
 
 
-  return (
-    <h1 className="text-3xl font-bold underline bg-red-600">Hello world!</h1>
+  return
+ (
+    <div className="app-container">
+      <h1>Welcome to Team Iron Man!</h1>
+      <p>API Status: {APIHealth}</p>
+      <Navbar />
+      {/* <Routes>
+        <Route path="/users/login" element={<Login />} />
+      </Routes> */}
+    </div>
+
   );
 }
 
