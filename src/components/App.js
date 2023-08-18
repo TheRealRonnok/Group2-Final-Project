@@ -23,9 +23,7 @@ const App = () => {
     getAPIStatus();
   }, []);
 
-
-  return
- (
+  return (
     <div className="app-container">
       <h1>Welcome to Team Iron Man!</h1>
       <p>API Status: {APIHealth}</p>
@@ -34,9 +32,7 @@ const App = () => {
         <Route path="/users/login" element={<Login />} />
       </Routes> */}
     </div>
-
   );
-}
-
+};
 
 export default App;
