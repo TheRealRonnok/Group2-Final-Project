@@ -1,21 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./style/index.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import Root from "./root";
 import { App } from "./components";
+import Home from "./components/Home";
+
 // css stylesheets can be created for each component
 // place them in the src/style directory, and import them like this:
-import Navbar from "./components/Navbar.js";
-import Products from "./components/Products";
-import "./style/index.css";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [{ path: "/", element: <Home /> }],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Router>
-    <Navbar />
-
-    {/* <Routes>
-        <Route path="/users/login" element={<Login />} />
-      </Routes> */}
-    <App />
-    {/* <Products /> */}
-  </Router>
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
