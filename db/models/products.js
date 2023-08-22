@@ -6,19 +6,25 @@ module.exports = {
   getFiguresByUser,
 };
 
-async function createActionFigure({ name, description, price }) {
+async function createActionFigure({
+  isActive,
+  title,
+  description,
+  price,
+  imgURL,
+}) {
   try {
     console.log("Inside createActionFigure");
     const {
       rows: [product],
     } = await client.query(
       `
-        INSERT INTO actionfigures(name, description, price) 
-        VALUES($1, $2, $3) 
-        ON CONFLICT (name) DO NOTHING 
+        INSERT INTO products("isActive", title, description, price, imgURL) 
+        VALUES($1, $2, $3, $4, $5) 
+        ON CONFLICT (title) DO NOTHING 
         RETURNING *;
       `,
-      [name, description, price]
+      [isActive, title, description, price, imgURL]
     );
 
     return product;
@@ -31,7 +37,7 @@ async function createActionFigure({ name, description, price }) {
 async function getAllFigures() {
   try {
     const { rows } = await client.query(`
-      SELECT * FROM actionfigures;
+      SELECT * FROM products;
     `);
 
     return rows;
@@ -43,7 +49,7 @@ async function getAllFigures() {
 async function getFiguresByUser(userId) {
   try {
     const { rows } = await client.query(`
-      SELECT * FROM actionfigures
+      SELECT * FROM products
       WHERE "userId"=${userId};
     `);
 

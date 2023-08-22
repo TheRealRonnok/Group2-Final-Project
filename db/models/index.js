@@ -4,8 +4,8 @@ module.exports = {
   // for example, create a users.js file for a User model
   // and User: require('./user') here
   ...require("./user"),
-  ...require("./actionFigure"),
-  ...require("./userCart"),
+  ...require("./products"),
+  ...require("./orders"),
   ...require("./guestCart"),
 };
 

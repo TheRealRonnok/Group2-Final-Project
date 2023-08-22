@@ -7,9 +7,9 @@ const {
 // Import Adapter Methods for Users
 const { createUser } = require("./models/user.js");
 // Import Adapter Methods for Action Figures
-const { createActionFigure } = require("./models/actionFigure.js");
+const { createActionFigure } = require("./models/products.js");
 // Import Adapter Methods for User Cart
-const {} = require("./models/userCart.js");
+const {} = require("./models/orders.js");
 
 async function buildTables() {
   try {
@@ -21,10 +21,10 @@ async function buildTables() {
       console.log("Starting to drop tables...");
 
       await client.query(`
-      DROP TABLE IF EXISTS guestorders;
-      DROP TABLE IF EXISTS userorders;
-      DROP TABLE IF EXISTS actionfigures;
-      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS orderdetails;
+      DROP TABLE IF EXISTS orders;
+      DROP TABLE IF EXISTS products;
+      DROP TABLE IF EXISTS users cascade;
     `);
 
       console.log("Finished dropping tables!");
@@ -42,44 +42,44 @@ async function buildTables() {
         CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         username varchar(255) UNIQUE NOT NULL,
-        password varchar(255) NOT NULL
+        email varchar(255) NOT NULL,
+        password varchar(255) NOT NULL,
+        "isAdmin" BOOLEAN DEFAULT false
         );
       `);
       console.log("Created users table.");
 
       await client.query(`
-        CREATE TABLE actionfigures (
+        CREATE TABLE products (
         id SERIAL PRIMARY KEY,
-        name varchar(255) UNIQUE NOT NULL,
+        "isActive" BOOLEAN DEFAULT true,
+        title varchar(255) UNIQUE NOT NULL,
         description TEXT NOT NULL,
-        price DECIMAL(10,2)
+        price DECIMAL(10,2),
+        imgURL varchar(255)
         );
       `);
-      console.log("Created actionfigures table.");
+      console.log("Created products table.");
 
       await client.query(`
-        CREATE TABLE userorders (
+        CREATE TABLE orders (
           id SERIAL PRIMARY KEY,
-          "userId" INTEGER REFERENCES users(id),
-          "productId" INTEGER REFERENCES actionfigures(id),
-          quantity INTEGER NOT NULL DEFAULT 0,
-          status varchar(255) DEFAULT 'created',
-          "datePlaced" DATE DEFAULT CURRENT_DATE
+          "userID" INTEGER REFERENCES users(id),
+          status varchar(255) DEFAULT 'CURRENT',
+          "lastUpdate" DATE DEFAULT CURRENT_DATE
           );
         `);
-      console.log("Created userorders table.");
+      console.log("Created orders table.");
 
       await client.query(`
-        CREATE TABLE guestorders (
-          id SERIAL PRIMARY KEY,
-          "guestId" INTEGER REFERENCES users(id),
-          "productId" INTEGER REFERENCES actionfigures(id),
+        CREATE TABLE orderdetails (
+          "orderId" INTEGER REFERENCES users(id),
+          "productId" INTEGER REFERENCES products(id),
           quantity INTEGER NOT NULL DEFAULT 0,
-          status varchar(255) DEFAULT 'created',
-          "datePlaced" DATE DEFAULT CURRENT_DATE
+          price DECIMAL (10,2)
           );
-          `);
-      console.log("Created guestorders table.");
+        `);
+      console.log("Created order details table.");
     } catch (error) {
       console.log("Error building tables!");
       throw error;
@@ -97,9 +97,48 @@ async function populateInitialData() {
 
     // Create Initial User Data
     const usersToCreate = [
-      { username: "tstark", password: "irule3000" },
-      { username: "bpanther", password: "wakanda4ever" },
-      { username: "murica", password: "freedom123" },
+      {
+        username: "tstark",
+        email: "tstark@google.com",
+        password: "irule3000",
+        isAdmin: false,
+      },
+      {
+        username: "bpanther",
+        email: "bpanther@google.com",
+        password: "wakanda4ever",
+        isAdmin: false,
+      },
+      {
+        username: "murica",
+        email: "murica@google.com",
+        password: "freedom123",
+        isAdmin: false,
+      },
+      {
+        username: "user4",
+        email: "user4@google.com",
+        password: "user4123",
+        isAdmin: false,
+      },
+      {
+        username: "Konnor",
+        email: "konnor@google.com",
+        password: "konnor123",
+        isAdmin: true,
+      },
+      {
+        username: "Jerikka",
+        email: "jerikka@google.com",
+        password: "jerikka123",
+        isAdmin: true,
+      },
+      {
+        username: "Ion",
+        email: "ion@google.com",
+        password: "ion123",
+        isAdmin: true,
+      },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
 
@@ -111,21 +150,76 @@ async function populateInitialData() {
     // Create Initial Products
     const productsToCreate = [
       {
-        name: "ironman",
+        isActive: true,
+        title: "ironman",
         description:
           "Iron Man in all his glory! Approximately 10 inches tall. (Not capable of actual flight)",
         price: 79.99,
+        imgURL: "",
       },
       {
-        name: "blackpanther",
+        isActive: true,
+        title: "blackpanther",
         description: "From Avengers: Endgame. Approximately 10 inches tall.",
         price: 89.99,
+        imgURL: "",
       },
       {
-        name: "captamerica",
+        isActive: true,
+        title: "captamerica",
         description:
           "The perfect addition to anyone's July 4th collection! Approximately 11 inches tall.",
         price: 84.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product4",
+        description: "Product 4",
+        price: 8.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product5",
+        description: "Product 5",
+        price: 4.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product6",
+        description: "Product 6",
+        price: 6.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product7",
+        description: "Product 7",
+        price: 74.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product8",
+        description: "Product 8",
+        price: 88.99,
+        imgURL: "",
+      },
+      {
+        isActive: true,
+        title: "product9",
+        description: "Product 9",
+        price: 90.99,
+        imgURL: "",
+      },
+      {
+        isActive: false,
+        title: "product10",
+        description: "Product 10",
+        price: 100.0,
+        imgURL: "",
       },
     ];
     const products = await Promise.all(
