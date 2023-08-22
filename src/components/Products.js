@@ -4,7 +4,7 @@ const BASE_URL = "http://localhost:4000";
 
 export async function getProducts() {
   try {
-    const response = await fetch(`${BASE_URL}/products`, {
+    const response = await fetch(`${BASE_URL}/api/products`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -42,8 +42,8 @@ function displayProduct(input) {
         <h2>Product Description not found</h2>
       )}
 
-      {/* Product Price */}
-      {input.price ? (
+//       {/* Product Price */}
+//       {input.price ? (
         <h2>Product Price: {input.price}</h2>
       ) : (
         <h2>Product Price not found</h2>
@@ -64,16 +64,15 @@ function Products() {
   useEffect(() => {
     getAPIProducts();
     setForceRender(false);
-  }, [forceRender]);
+  }, []);
 
   return (
     <section>
-      <div>Products Page!</div>
-      <div>
+      {/* <div>
         {products.map((item, idx) => (
-          <div key={idx}>{displayProduct(item)}</div>
+          <div key={idx}>{displayProduct(item)} </div>
         ))}
-      </div>
+      </div> */}
     </section>
   );
 }
