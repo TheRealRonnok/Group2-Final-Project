@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-// const BASE_URL = `localhost:4000/api`;
+const BASE_URL = "http://localhost:4000";
 
 export async function getProducts() {
   try {
