@@ -26,8 +26,9 @@ userRouter.get("/", async (req, res, next) => {
 
 //POST /api/users/register
 userRouter.post("/register", async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body.user;
   //check if the user exists
+  console.log({username, password})
   try {
     const userExist = await getUserByUsername(username);
     if (userExist) {
@@ -44,7 +45,7 @@ userRouter.post("/register", async (req, res, next) => {
         name: "InvalidPassword",
       });
     } else {
-      const newUser = await createUser(req.body);
+      const newUser = await createUser(req.body.user);
       const token = jwt.sign(
         {
           id: newUser.id,
@@ -72,7 +73,7 @@ userRouter.post("/register", async (req, res, next) => {
 
 // POST /api/users/login
 userRouter.post("/login", async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body.user;
   if (!username || !password) {
     next({
       error: "Login Error",

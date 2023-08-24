@@ -13,6 +13,7 @@ server.use(morgan("dev"));
 
 // handle application/json requests
 server.use(express.json());
+// server.use(express.parser.urlencoded({ extended: true }));
 
 // here's our static files
 const path = require("path");
