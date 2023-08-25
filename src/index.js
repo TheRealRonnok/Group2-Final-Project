@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Products from "./components/Products";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Cart from "./components/Cart";
 
 
 // css stylesheets can be created for each component
@@ -19,13 +20,15 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
 
-    children: [{ path: "/", element: <Home /> },
-    { path: "/products", element: <Products /> }, 
-      { path: "/login", element: <Login /> }, 
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/products", element: <Products /> },
+      { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      ],
+      { path: "/cart", element: <Cart /> },
+    ],
   },
-])
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
