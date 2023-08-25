@@ -1,27 +1,35 @@
 // grab our db client connection to use with our adapters
 const client = require("../client");
 
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUserById,
+  getUserByUsername,
+  updateUser,
+  deleteUser,
+};
+
 // CREATE USER FUNCTION
-async function createUser({ username, password }) {
+async function createUser({ username, email, password, isAdmin }) {
   try {
     console.log(
-      "Inside createUser, Username and Password created: ",
+      "Inside createUser, Username, Email and Password created: ",
       username,
+      email,
       password
     );
     const {
       rows: [user],
     } = await client.query(
       `
-        INSERT INTO users(username, password) 
-        VALUES($1, $2) 
+        INSERT INTO users(username, email, password, "isAdmin") 
+        VALUES($1, $2, $3, $4) 
         ON CONFLICT (username) DO NOTHING 
         RETURNING *;
       `,
-      [username, password]
+      [username, email, password, isAdmin]
     );
-
-    // user.password = null;
 
     return user;
   } catch (error) {
@@ -167,13 +175,3 @@ async function deleteUser(id) {
     throw error;
   }
 }
-
-module.exports = {
-  // add your database adapter fns here
-  createUser,
-  getAllUsers,
-  getUserById,
-  getUserByUsername,
-  updateUser,
-  deleteUser,
-};
