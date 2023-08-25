@@ -40,6 +40,8 @@ async function getAllFigures() {
       SELECT * FROM products;
     `);
 
+    console.log({ rows });
+
     return rows;
   } catch (error) {
     throw error;

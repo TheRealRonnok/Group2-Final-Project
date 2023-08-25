@@ -4,18 +4,18 @@ const client = require("../client");
 module.exports = { createOrder, deleteOrder };
 
 // CREATE USER CART ITEM
-async function createOrder({ userID, status, lastUpdate }) {
+async function createOrder({ userID, status }) {
   try {
     console.log("Inside createOrder.");
     const {
       rows: [order],
     } = await client.query(
       `
-        INSERT INTO orders("userId", status, "lastUpdate") 
-        VALUES($1, $2, $3)
+        INSERT INTO orders("userId", status) 
+        VALUES($1, $2)
         RETURNING *;
       `,
-      [userID, status, lastUpdate]
+      [userID, status]
     );
 
     console.log("Successfully created Order.");

@@ -2,52 +2,36 @@ import { useState, useEffect } from "react";
 
 const BASE_URL = "http://localhost:4000";
 
-export async function getProducts() {
-  try {
-    const response = await fetch(`${BASE_URL}/api/products`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const result = await response.json();
-    console.log(result);
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 function displayProduct(input) {
   return (
     <>
+      {console.log("Inside displayProduct")}
       {/* Product ID */}
       {input.id ? (
         <h2>Product ID: {input.id}</h2>
       ) : (
         <h2>Product ID not found</h2>
       )}
-
       {/* Product Name */}
-      {input.name ? (
-        <h2>Product Name: {input.name}</h2>
+      {input.title ? (
+        <h2>Product Title: {input.title}</h2>
       ) : (
-        <h2>Product Name not found</h2>
+        <h2>Product Title not found</h2>
       )}
-
       {/* Product Description */}
       {input.description ? (
         <h2>Product Description: {input.description}</h2>
       ) : (
         <h2>Product Description not found</h2>
       )}
-
-//       {/* Product Price */}
-//       {input.price ? (
+      {/* Product Price */}
+      {input.price ? (
         <h2>Product Price: {input.price}</h2>
       ) : (
         <h2>Product Price not found</h2>
       )}
+      <button className="bg-gray-300 p-1 m-2">Add to Cart</button>
+      <hr></hr>
     </>
   );
 }
@@ -56,23 +40,36 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [forceRender, setForceRender] = useState(false);
 
-  const getAPIProducts = async () => {
-    let result = await getProducts();
-    setProducts(result);
-  };
-
   useEffect(() => {
-    getAPIProducts();
+    const getProducts = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/products`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const result = await response.json();
+        console.log("getProducts Result: ", result);
+        setProducts(result.actionFigures);
+        return;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getProducts();
     setForceRender(false);
-  }, []);
+  }, [forceRender]);
 
   return (
     <section>
-      {/* <div>
+      PRODUCTS
+      <div>
         {products.map((item, idx) => (
-          <div key={idx}>{displayProduct(item)} </div>
+          <div key={idx}>{displayProduct(item)}</div>
         ))}
-      </div> */}
+      </div>
     </section>
   );
 }
