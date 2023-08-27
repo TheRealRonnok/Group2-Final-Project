@@ -1,14 +1,14 @@
 //login form
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { loginUser } from "./ApiCalls";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState("");
     const [error, setError] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { setIsLoggedIn } = useOutletContext();
+    const { setToken } = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -20,8 +20,10 @@ const Login = () => {
                 setIsLoggedIn(true);
                 setToken(user.token);
                 localStorage.setItem("token", user.token);
+                localStorage.setItem("user", user.username);
                 setError("");
                 navigate("/");
+                alert("Login successful!");
             } else {
                 setError("Invalid username or password");
             }

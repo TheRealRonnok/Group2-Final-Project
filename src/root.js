@@ -12,7 +12,7 @@ const Root = () => {
   const [user, setUser] = useState("");
   const [token, setToken] = useState("");
 
-  //check for token in local storage
+  // check for token in local storage
   const checkLocalStorage = () => {
     const checkToken = localStorage.getItem("token");
     const checkUser = localStorage.getItem("user");
