@@ -11,30 +11,31 @@ module.exports = {
 };
 
 // CREATE USER FUNCTION
-async function createUser({ username, email, password, isAdmin }) {
+async function createUser({ username, password, isAdmin = false }) {
   try {
     console.log(
-      "Inside createUser, Username, Email and Password created: ",
+      "Inside createUser, Username, and Password created: ",
       username,
-      email,
       password
     );
     const {
-      rows: [user],
+      rows: [user]
     } = await client.query(
       `
-        INSERT INTO users(username, email, password, "isAdmin") 
-        VALUES($1, $2, $3, $4) 
-        ON CONFLICT (username) DO NOTHING 
+        INSERT INTO users (username, password, "isAdmin")
+        VALUES($1, $2, $3)
+        ON CONFLICT (username) DO NOTHING
         RETURNING *;
       `,
-      [username, email, password, isAdmin]
+      [username, password, isAdmin]
     );
-
+      console.log({user})
     return user;
   } catch (error) {
     console.log("Error creating user.");
+    console.log(error);
     throw error;
+  
   }
 }
 
@@ -100,8 +101,9 @@ async function getUserByUsername(userName) {
       `
         SELECT *
         FROM users
-        WHERE username=${userName};
-      `
+        WHERE username=$1;
+      `,
+      [userName]
     );
 
     if (!user) {

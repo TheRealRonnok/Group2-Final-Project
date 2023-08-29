@@ -1,11 +1,12 @@
 import { registerUser } from "./ApiCalls";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState("");
+    const { token, setToken } = useOutletContext();
+    const { setIsLoggedIn, setUser } = useOutletContext();
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
@@ -26,16 +27,28 @@ export const Register = () => {
             try {
                 console.log({username, password})
                 const user = await registerUser(username, password);
+                if (user) {
+                    setIsLoggedIn(true);
                     setToken(user.token);
+                    setUser(user.user);
                     localStorage.setItem("token", user.token);
+                    localStorage.setItem("user", user.user.username);
                     setError("");
-                    navigate("./Login");
-                    alert ("Registration successful! Please login.");
-                    return user; 
+                    alert("Registration successful!");
+                    navigate("/");
+                } else (
+                    alert ("Registration unsuccessful, please try again.")
+                )
             } catch (error) {
                 console.error(error);
+            } finally {
+                setUsername("");
+                setPassword("");
+                setConfirmPassword("");
             }
         }
+
+        console.log({token})
     };
 
     const handleUsername = (e) => { 
@@ -48,7 +61,6 @@ export const Register = () => {
         setConfirmPassword(e.target.value);
     }
 
-    localStorage.setItem("token", token);
 
     const handleChange = (e) => {
         if (e.target.id === "username") {

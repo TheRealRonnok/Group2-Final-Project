@@ -42,7 +42,6 @@ async function buildTables() {
         CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         username varchar(255) UNIQUE NOT NULL,
-        email varchar(255) NOT NULL,
         password varchar(255) NOT NULL,
         "isAdmin" BOOLEAN DEFAULT false
         );
@@ -99,43 +98,36 @@ async function populateInitialData() {
     const usersToCreate = [
       {
         username: "tstark",
-        email: "tstark@google.com",
         password: "irule3000",
         isAdmin: false,
       },
       {
         username: "bpanther",
-        email: "bpanther@google.com",
         password: "wakanda4ever",
         isAdmin: false,
       },
       {
         username: "murica",
-        email: "murica@google.com",
         password: "freedom123",
         isAdmin: false,
       },
       {
         username: "user4",
-        email: "user4@google.com",
         password: "user4123",
         isAdmin: false,
       },
       {
         username: "Konnor",
-        email: "konnor@google.com",
         password: "konnor123",
         isAdmin: true,
       },
       {
         username: "Jerikka",
-        email: "jerikka@google.com",
         password: "jerikka123",
         isAdmin: true,
       },
       {
         username: "Ion",
-        email: "ion@google.com",
         password: "ion123",
         isAdmin: true,
       },

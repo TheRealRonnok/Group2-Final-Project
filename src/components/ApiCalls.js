@@ -1,9 +1,9 @@
-const APIURL = `http://localhost:4000/api`;
+const APIURL = "http://localhost:4000/api/users"
 const token = localStorage.getItem("token");
 
-export async function loginUser(username, password) {
+export const loginUser = async (username, password) =>  {
     try {
-        const response = await fetch(`${APIURL}users/login`, {
+        const response = await fetch(`${APIURL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -17,15 +17,15 @@ export async function loginUser(username, password) {
         });
 
         const result = await response.json();
-        return result.user;
+        return result
     } catch (error) {
         console.log(error);
     }
 }
 
-export async function registerUser(username, password) {
+export const registerUser = async (username, password) => {
     try {
-        const response = await fetch(`${APIURL}/users/register`, {
+        const response = await fetch(`${APIURL}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export async function registerUser(username, password) {
         });
 
         const result = await response.json();
-        return result.user;
+        return result
     } catch (error) {
         console.log(error);
     }
