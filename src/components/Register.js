@@ -25,7 +25,7 @@ export const Register = () => {
             setError("Username must be at least 3 characters");
         } else {
             try {
-                console.log({username, password})
+                console.log(username, password)
                 const user = await registerUser(username, password);
                 if (user) {
                     setIsLoggedIn(true);
