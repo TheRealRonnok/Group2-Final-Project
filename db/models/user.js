@@ -19,23 +19,22 @@ async function createUser({ username, password, isAdmin = false }) {
       password
     );
     const {
-      rows: [user]
+      rows: [user],
     } = await client.query(
       `
-        INSERT INTO users (username, password, "isAdmin")
+        INSERT INTO users (username, password, isAdmin)
         VALUES($1, $2, $3)
         ON CONFLICT (username) DO NOTHING
         RETURNING *;
       `,
       [username, password, isAdmin]
     );
-      console.log({user})
+    console.log({ user });
     return user;
   } catch (error) {
     console.log("Error creating user.");
     console.log(error);
     throw error;
-  
   }
 }
 

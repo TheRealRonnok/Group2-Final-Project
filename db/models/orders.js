@@ -1,21 +1,29 @@
 // grab our db client connection to use with our adapters
 const client = require("../client");
+const { getUserByUsername } = require("./user");
 
-module.exports = { createOrder, deleteOrder };
+module.exports = {
+  createOrder,
+  getAllOrders,
+  addDetailtoOrder,
+  getAllOrdersByUser,
+  getOrderByOrderID,
+  deleteOrder,
+};
 
 // CREATE USER CART ITEM
-async function createOrder({ userID, status }) {
+async function createOrder({ userID, status, lastUpdate }) {
   try {
     console.log("Inside createOrder.");
     const {
       rows: [order],
     } = await client.query(
       `
-        INSERT INTO orders("userId", status) 
-        VALUES($1, $2)
+        INSERT INTO orders (userID, status, lastUpdate) 
+        VALUES($1, $2, $3)
         RETURNING *;
       `,
-      [userID, status]
+      [userID, status, lastUpdate]
     );
 
     console.log("Successfully created Order.");
@@ -26,14 +34,91 @@ async function createOrder({ userID, status }) {
   }
 }
 
-// DELETE ITEM IN USERS CART
+// Return array of orders for the user (no details, just the orders)
+async function getAllOrders() {
+  try {
+    const { rows: orders } = await client.query(`
+      SELECT orders.id, status, userId, u.username, lastUpdate
+      FROM orders
+      JOIN users u ON u.id=orders.userId;
+    `);
+
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Attach details to an order
+async function addDetailtoOrder(orders) {
+  try {
+    for (let i = 0; i < orders.length; i++) {
+      let _user = await getUserById(orders[i].userid);
+      orders[i].username = _user.username;
+
+      let orderid = orders[i].id;
+
+      let { rows: orderdetails } = await client.querty(`
+        SELECT
+        order.orderid AS orderid,
+        order.productId AS productId,
+        order.quantity AS quantity,
+        order.price AS price,
+        product.title AS title,
+        product.imgURL AS imgURL,
+        FROM orderdetails AS od
+        JOIN products product ON prod.id=od.productId
+        WHERE od.orderid=${orderid};
+      `);
+
+      orders[i].orderdetails = orderdetails;
+    }
+    return;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Get all Orders By User
+async function getAllOrdersByUser({ username }) {
+  try {
+    const user = await getUserByUsername(username);
+
+    const { rows: orders } = await client.query(
+      `SELECT * FROM orders WHERE userID = ${user.id};`
+    );
+
+    await attachDetailsToOrders(orders);
+
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Get all Orders By User
+async function getOrderByOrderID({ id }) {
+  try {
+    const { rows: orders } = await client.query(
+      `SELECT * FROM orders WHERE id = ${id};`
+    );
+
+    await attachDetailsToOrders(orders);
+
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// DELETE ORDER
 async function deleteOrder(orderID) {
   console.log("Inside deleteOrder.");
 
   try {
     const { order } = await client.query(`
           DELETE FROM orders
-          WHERE "id"=${orderID};
+          WHERE id = ${orderID};
         `);
 
     console.log("Successfully deleted Order.");

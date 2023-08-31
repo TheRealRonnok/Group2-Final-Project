@@ -8,13 +8,14 @@ module.exports = {
 // Add an item to the order
 async function addItemToOrder({ orderId, productId, quantity, price }) {
   try {
-    console.log("Inside addDetailToOrder.");
+    console.log("Inside addItemToOrder.");
     const {
       rows: [orderDetail],
     } = await client.query(
       `
-        INSERT INTO orderdetails("orderId", "productId", quantity, price) 
+        INSERT INTO orderdetails(orderId, productId, quantity, price) 
         VALUES($1, $2, $3, $4)
+        ON CONFLICT (orderId, productId) DO NOTHING
         RETURNING *;
       `,
       [orderId, productId, quantity, price]
@@ -28,18 +29,19 @@ async function addItemToOrder({ orderId, productId, quantity, price }) {
 }
 
 // delete item in guest's cart
-async function removeItemFromOrder(productID) {
+async function removeItemFromOrder(orderID, productID) {
   console.log("Inside deleteGuestCartItem.");
 
   try {
-    const { guestCartItem } = await client.query(`
+    await client.query(`
           DELETE FROM orderdetails
-          WHERE "productId"=${productID};
+          WHERE orderId = ${orderID}
+          AND productId = ${productID};
         `);
 
-    console.log("Successfully deleted user's cart item.");
+    console.log("Successfully deleted Order-Detail for: ", orderID, productID);
 
-    return guestCartItem;
+    return;
   } catch (error) {
     console.log("Error deleting guest's cart item.");
     throw error;
