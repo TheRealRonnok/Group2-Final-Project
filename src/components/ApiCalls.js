@@ -39,7 +39,7 @@ export const registerUser = async (username, password) => {
         });
 
         const result = await response.json();
-        return result
+        return result;
     } catch (error) {
         console.log(error);
     }
