@@ -45,7 +45,7 @@ userRouter.post("/register", async (req, res, next) => {
       });
     } else {
       const newUser = await createUser(req.body.user);
-      console.log({id: newUser.id, secret: process.env.JWT_SECRET})
+      console.log({ id: newUser.id, secret: process.env.JWT_SECRET });
       const token = jwt.sign(
         {
           id: newUser.id,
@@ -56,7 +56,7 @@ userRouter.post("/register", async (req, res, next) => {
           expiresIn: "14days",
         }
       );
-        console.log({token})
+      console.log({ token });
       res.send({
         message: "Registration successful!",
         token: token,

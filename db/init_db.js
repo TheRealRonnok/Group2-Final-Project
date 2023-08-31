@@ -6,10 +6,12 @@ const {
 
 // Import Adapter Methods for Users
 const { createUser } = require("./models/user.js");
-// Import Adapter Methods for Action Figures
+// Import Adapter Methods for Products
 const { createActionFigure } = require("./models/products.js");
-// Import Adapter Methods for User Cart
-const {} = require("./models/orders.js");
+// Import Adapter Methods for Orders
+const { createOrder } = require("./models/orders.js");
+// Import Adapter Methods for Order Details
+const { addItemToOrder } = require("./models/orderdetails.js");
 
 async function buildTables() {
   try {
@@ -43,19 +45,19 @@ async function buildTables() {
         id SERIAL PRIMARY KEY,
         username varchar(255) UNIQUE NOT NULL,
         password varchar(255) NOT NULL,
-        "isAdmin" BOOLEAN DEFAULT false
+        isAdmin BOOLEAN DEFAULT false
         );
       `);
       console.log("Created users table.");
 
       await client.query(`
         CREATE TABLE products (
-        id SERIAL PRIMARY KEY,
-        "isActive" BOOLEAN DEFAULT true,
-        title varchar(255) UNIQUE NOT NULL,
-        description TEXT NOT NULL,
-        price DECIMAL(10,2),
-        imgURL varchar(255)
+          id SERIAL PRIMARY KEY,
+          isActive BOOLEAN DEFAULT true,
+          title varchar(255) UNIQUE NOT NULL,
+          description TEXT NOT NULL,
+          price DECIMAL(10,2),
+          imgURL varchar(255)
         );
       `);
       console.log("Created products table.");
@@ -63,21 +65,22 @@ async function buildTables() {
       await client.query(`
         CREATE TABLE orders (
           id SERIAL PRIMARY KEY,
-          "userID" INTEGER REFERENCES users(id),
-          status varchar(255) DEFAULT 'CURRENT',
-          "lastUpdate" DATE DEFAULT CURRENT_DATE
+          userID INTEGER REFERENCES users(id),
+          status varchar(50) NOT NULL,
+          lastUpdate DATE DEFAULT CURRENT_DATE
           );
         `);
       console.log("Created orders table.");
 
       await client.query(`
         CREATE TABLE orderdetails (
-          "orderId" INTEGER REFERENCES users(id),
-          "productId" INTEGER REFERENCES products(id),
+          orderId INTEGER NOT NULL REFERENCES orders(id),
+          productId INTEGER NOT NULL REFERENCES products(id),
           quantity INTEGER NOT NULL DEFAULT 0,
-          price DECIMAL (10,2)
-          );
-        `);
+          price DECIMAL (10,2),
+          PRIMARY KEY (orderId, productId)
+        );
+      `);
       console.log("Created order details table.");
     } catch (error) {
       console.log("Error building tables!");
@@ -222,8 +225,93 @@ async function populateInitialData() {
     console.log("Products created:");
     console.log(products);
     console.log("Finished creating products!");
+
+    // Create Initial Orders
+    const ordersToCreate = [
+      {
+        userID: 1,
+        status: "CURRENT",
+      },
+      {
+        userID: 2,
+        status: "CURRENT",
+      },
+      {
+        userID: 3,
+        status: "CURRENT",
+      },
+      {
+        userID: 4,
+        status: "PURCHASED",
+      },
+      {
+        userID: 5,
+        status: "CURRENT",
+      },
+      {
+        userID: 6,
+        status: "CURRENT",
+      },
+      {
+        userID: 7,
+        status: "CURRENT",
+      },
+    ];
+    const orders = await Promise.all(ordersToCreate.map(createOrder));
+
+    // Display Initial Orders
+    console.log("Orders created:");
+    console.log(orders);
+    console.log("Finished creating orders!");
+
+    // Create Initial Order Details
+    const orderDetailsToCreate = [
+      {
+        orderId: 1,
+        productId: 1,
+        quantity: 1,
+      },
+      {
+        orderId: 2,
+        productId: 2,
+        quantity: 2,
+      },
+      {
+        orderId: 3,
+        productId: 3,
+        quantity: 3,
+      },
+      {
+        orderId: 4,
+        productId: 4,
+        quantity: 4,
+      },
+      {
+        orderId: 5,
+        productId: 5,
+        quantity: 5,
+      },
+      {
+        orderId: 6,
+        productId: 6,
+        quantity: 6,
+      },
+      {
+        orderId: 7,
+        productId: 7,
+        quantity: 7,
+      },
+    ];
+    const orderDetails = await Promise.all(
+      orderDetailsToCreate.map(addItemToOrder)
+    );
+
+    // Display Initial Order Details
+    console.log("Order Details created:");
+    console.log(orderDetails);
+    console.log("Finished creating orders details!");
   } catch (error) {
-    console.error("Error creating users!");
+    console.error("Error seeding database!");
     throw error;
   }
 }

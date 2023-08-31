@@ -3,9 +3,13 @@ const client = require("../client");
 module.exports = {
   createActionFigure,
   getAllFigures,
-  getFiguresByUser,
+  getAllActiveFigures,
+  updateProduct,
+  deactivateProduct,
+  activateProduct,
 };
 
+// Create a new Action Figure to sell
 async function createActionFigure({
   isActive,
   title,
@@ -19,7 +23,7 @@ async function createActionFigure({
       rows: [product],
     } = await client.query(
       `
-        INSERT INTO products("isActive", title, description, price, imgURL) 
+        INSERT INTO products(isActive, title, description, price, imgURL) 
         VALUES($1, $2, $3, $4, $5) 
         ON CONFLICT (title) DO NOTHING 
         RETURNING *;
@@ -34,6 +38,7 @@ async function createActionFigure({
   }
 }
 
+// Returns all action figures
 async function getAllFigures() {
   try {
     const { rows } = await client.query(`
@@ -48,14 +53,84 @@ async function getAllFigures() {
   }
 }
 
-async function getFiguresByUser(userId) {
+// Return all ACTIVE action figures
+async function getAllActiveFigures() {
   try {
-    const { rows } = await client.query(`
+    const { rows: products } = await client.query(`
       SELECT * FROM products
-      WHERE "userId"=${userId};
+      WHERE isActive=TRUE;
     `);
 
-    return rows;
+    return products;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Update a product
+async function updateProduct() {
+  try {
+    const productFields = [
+      "isActive",
+      "title",
+      "description",
+      "price",
+      "imgURL",
+    ];
+
+    const updateFields = [];
+    const values = [id];
+
+    productFields.forEach((field) => {
+      if (updates[field] !== undefined) {
+        updateFields.push(`${field} = $${values.length + 1}`);
+        values.push(updates[field]);
+      }
+    });
+
+    const {
+      rows: [product],
+    } = await client.query(
+      `
+      UPDATE products
+      SET ${updateFields.join(", ")}
+      WHERE id = $1
+      RETURNING *;
+      `,
+      values
+    );
+
+    return product;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Deactivate a product
+async function deactivateProduct(id) {
+  try {
+    const updates = {
+      isActive: false,
+    };
+
+    const deactivatedProduct = await updateProduct(id, update);
+
+    return deactivatedProduct;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Activate a product
+async function activateProduct(id) {
+  try {
+    const updates = {
+      isActive: true,
+    };
+
+    const deactivatedProduct = await updateProduct(id, update);
+
+    return deactivatedProduct;
   } catch (error) {
     throw error;
   }
