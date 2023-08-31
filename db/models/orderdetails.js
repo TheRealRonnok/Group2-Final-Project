@@ -2,6 +2,7 @@ const client = require("../client");
 
 module.exports = {
   addItemToOrder,
+  getAllOrderDetails,
   removeItemFromOrder,
 };
 
@@ -28,7 +29,20 @@ async function addItemToOrder({ orderId, productId, quantity, price }) {
   }
 }
 
-// delete item in guest's cart
+// Return all the order details
+async function getAllOrderDetails() {
+  try {
+    const { rows: orderdetails } = await client.query(`
+      SELECT * FROM orderdetails;
+    `);
+
+    return orderdetails;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Delete item from order
 async function removeItemFromOrder(orderID, productID) {
   console.log("Inside deleteGuestCartItem.");
 
