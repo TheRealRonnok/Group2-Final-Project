@@ -35,3 +35,5 @@ ordersRouter.get("/:username", async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = ordersRouter;

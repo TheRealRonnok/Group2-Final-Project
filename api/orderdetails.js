@@ -22,20 +22,22 @@ orderDetailsRouter.get("/", async (req, res, next) => {
 });
 
 // DELETE an Order Detail from an Order
-orderDetailsRouter.delete("/:orderid/:productid", async (req, res, next) => {
-  let orderid = parseInt(req.params.orderid);
-  let productid = parseInt(req.params.productid);
+// orderDetailsRouter.delete("/:orderid/:productid", async (req, res, next) => {
+//   let orderid = parseInt(req.params.orderid);
+//   let productid = parseInt(req.params.productid);
 
-  try {
-    const deleteItem = await getOrderByOrderID(orderid, productid);
+//   try {
+//     const deleteItem = await getOrderByOrderID(orderid, productid);
 
-    await removeItemFromOrder(orderid, productid);
+//     await removeItemFromOrder(orderid, productid);
 
-    res.send({
-        message: "Order Detail deleted successfully!"
-        ...deleteItem,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+//     res.send({
+//         message: "Order Detail deleted successfully!"
+//         ...deleteItem,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+module.exports = orderDetailsRouter;
