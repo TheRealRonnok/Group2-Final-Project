@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useParams, useNavigate } from "react-router-dom";
 const BASE_URL = "http://localhost:4000";
 
 function displayProduct(input) {
@@ -30,8 +30,8 @@ function displayProduct(input) {
       ) : (
         <h2>Product Price not found</h2>
       )}
-      <button className="bg-gray-300 p-1 m-2">Add to Cart</button>
-      <hr></hr>
+      {/* <button className="bg-gray-300 p-1 m-2">Add to Cart</button>
+      <hr></hr> */}
     </>
   );
 }
@@ -39,7 +39,7 @@ function displayProduct(input) {
 function Products() {
   const [products, setProducts] = useState([]);
   const [forceRender, setForceRender] = useState(false);
-
+const navigate = useNavigate();
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -62,12 +62,29 @@ function Products() {
     setForceRender(false);
   }, [forceRender]);
 
+const handleAddToCart = () => {
+
+
+  
+  // Redirect to the add to cart route
+  navigate(`/cart`);
+};
+
   return (
     <section>
       PRODUCTS
       <div>
         {products.map((item, idx) => (
-          <div key={idx}>{displayProduct(item)}</div>
+          <div key={idx}>
+            {displayProduct(item)}
+            <button
+              className="bg-gray-300 p-1 m-2"
+              onClick={() => handleAddToCart()}
+            >
+              Add to Cart
+            </button>
+            <hr></hr>
+          </div>
         ))}
       </div>
     </section>
