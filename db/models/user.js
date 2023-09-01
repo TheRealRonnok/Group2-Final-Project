@@ -68,13 +68,12 @@ async function getAllUsers() {
 async function getUserById(userId) {
   try {
     console.log("Inside getUserById.");
+    console.log(userId);
     const {
       rows: [user],
     } = await client.query(
       `
-        SELECT id, username
-        FROM users
-        WHERE id=${userId};
+        SELECT * FROM users WHERE id=${userId};
       `
     );
 
@@ -82,7 +81,7 @@ async function getUserById(userId) {
       console.log("No User found - Inside getUserById.");
       return null;
     }
-
+    console.log(user);
     return user;
   } catch (error) {
     console.log("Error getting User By Id.");
@@ -109,7 +108,7 @@ async function getUserByUsername(userName) {
       console.log("No User found - Inside getUserByUsername.");
       return null;
     }
-
+    console.log(user);
     return user;
   } catch (error) {
     console.log("Error getting User By Username.");

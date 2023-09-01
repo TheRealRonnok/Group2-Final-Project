@@ -1,6 +1,6 @@
 // grab our db client connection to use with our adapters
 const client = require("../client");
-const { getUserByUsername } = require("./user");
+const { getUserByUsername, getUserById } = require("./user");
 
 module.exports = {
   createOrder,
@@ -52,26 +52,29 @@ async function getAllOrders() {
 // Attach details to an order
 async function addDetailtoOrder(orders) {
   try {
+    console.log("Inside addDetailtoOrder.");
+    console.log(orders);
     for (let i = 0; i < orders.length; i++) {
       let _user = await getUserById(orders[i].userid);
       orders[i].username = _user.username;
 
       let orderid = orders[i].id;
 
-      let { rows: orderdetails } = await client.querty(`
+      let { rows: orderdetails } = await client.query(`
         SELECT
-        order.orderid AS orderid,
-        order.productId AS productId,
-        order.quantity AS quantity,
-        order.price AS price,
-        product.title AS title,
-        product.imgURL AS imgURL,
+        od.orderId AS orderId,
+        od.productId AS productId,
+        od.quantity AS quantity,
+        od.price AS price,
+        prod.title AS title,
+        prod.imgURL AS imgURL
         FROM orderdetails AS od
-        JOIN products product ON prod.id=od.productId
-        WHERE od.orderid=${orderid};
+        JOIN products prod ON prod.id=od.productId
+        WHERE od.orderId=${orderid};
       `);
 
       orders[i].orderdetails = orderdetails;
+      console.log(orders[i].orderdetails);
     }
     return;
   } catch (error) {
@@ -82,14 +85,15 @@ async function addDetailtoOrder(orders) {
 // Get all Orders By User
 async function getAllOrdersByUser({ username }) {
   try {
+    console.log("Inside getAllOrdersByUser.");
     const user = await getUserByUsername(username);
 
     const { rows: orders } = await client.query(
       `SELECT * FROM orders WHERE userID = ${user.id};`
     );
-
-    await attachDetailsToOrders(orders);
-
+    console.log(orders);
+    await addDetailtoOrder(orders);
+    console.log(orders);
     return orders;
   } catch (error) {
     throw error;
@@ -103,7 +107,7 @@ async function getOrderByOrderID({ id }) {
       `SELECT * FROM orders WHERE id = ${id};`
     );
 
-    await attachDetailsToOrders(orders);
+    await addDetailtoOrder(orders);
 
     return orders;
   } catch (error) {

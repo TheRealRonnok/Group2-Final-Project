@@ -26,6 +26,8 @@ ordersRouter.get("/", async (req, res, next) => {
 
 // GET all Orders from the API by Username
 ordersRouter.get("/:username", async (req, res, next) => {
+  console.log("req.paramas : ", req.params);
+
   try {
     const userOrders = await getAllOrdersByUser({
       username: req.params.username,
