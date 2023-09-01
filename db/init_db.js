@@ -11,7 +11,7 @@ const { createActionFigure } = require("./models/products.js");
 // Import Adapter Methods for Orders
 const { createOrder } = require("./models/orders.js");
 // Import Adapter Methods for Order Details
-const { addItemToOrder } = require("./models/orderdetails.js");
+const { createOrderDetail } = require("./models/orderdetails.js");
 
 async function buildTables() {
   try {
@@ -303,7 +303,7 @@ async function populateInitialData() {
       },
     ];
     const orderDetails = await Promise.all(
-      orderDetailsToCreate.map(addItemToOrder)
+      orderDetailsToCreate.map(createOrderDetail)
     );
 
     // Display Initial Order Details

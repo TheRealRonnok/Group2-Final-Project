@@ -1,15 +1,15 @@
 const client = require("../client");
 
 module.exports = {
-  addItemToOrder,
+  createOrderDetail,
   getAllOrderDetails,
   removeItemFromOrder,
 };
 
 // Add an item to the order
-async function addItemToOrder({ orderId, productId, quantity, price }) {
+async function createOrderDetail({ orderId, productId, quantity, price }) {
   try {
-    console.log("Inside addItemToOrder.");
+    console.log("Inside createOrderDetail.");
     const {
       rows: [orderDetail],
     } = await client.query(
