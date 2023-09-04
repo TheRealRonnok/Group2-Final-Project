@@ -30,6 +30,12 @@ function displayProduct(input) {
       ) : (
         <h2>Product Price not found</h2>
       )}
+      {/* Image */}
+      {input.imgurl ? (
+        <img src={input.imgurl} alt={input.title} />
+      ) : (
+        <h2>No picture found D:</h2>
+      )}
       {/* <button className="bg-gray-300 p-1 m-2">Add to Cart</button>
       <hr></hr> */}
     </>
@@ -39,7 +45,7 @@ function displayProduct(input) {
 function Products() {
   const [products, setProducts] = useState([]);
   const [forceRender, setForceRender] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -62,13 +68,10 @@ const navigate = useNavigate();
     setForceRender(false);
   }, [forceRender]);
 
-const handleAddToCart = () => {
-
-
-  
-  // Redirect to the add to cart route
-  navigate(`/cart`);
-};
+  const handleAddToCart = () => {
+    // Redirect to the add to cart route
+    navigate(`/cart`);
+  };
 
   return (
     <section>

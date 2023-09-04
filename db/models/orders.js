@@ -74,7 +74,7 @@ async function addDetailtoOrder(orders) {
       `);
 
       orders[i].orderdetails = orderdetails;
-      console.log(orders[i].orderdetails);
+      console.log("addDetailtoOrder", orders[i].orderdetails);
     }
     return;
   } catch (error) {

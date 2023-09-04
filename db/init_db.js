@@ -100,6 +100,11 @@ async function populateInitialData() {
     // Create Initial User Data
     const usersToCreate = [
       {
+        username: "guest",
+        password: "123",
+        isAdmin: false,
+      },
+      {
         username: "tstark",
         password: "irule3000",
         isAdmin: false,
@@ -148,71 +153,80 @@ async function populateInitialData() {
         isActive: true,
         title: "ironman",
         description:
-          "Iron Man in all his glory! Approximately 10 inches tall. (Not capable of actual flight)",
+          "Iron Man in all his glory! (Not capable of actual flight)",
         price: 79.99,
-        imgURL: "",
+        imgURL:
+          "https://jeehyung.com/cdn/shop/products/ironmansideshow_300x300.jpg?v=1615314221",
       },
       {
         isActive: true,
         title: "blackpanther",
-        description: "From Avengers: Endgame. Approximately 10 inches tall.",
+        description: "From Avengers: Endgame.",
         price: 89.99,
-        imgURL: "",
+        imgURL:
+          "https://images.hdqwalls.com/walls/thumb/black-panther-rise-tf.jpg",
       },
       {
         isActive: true,
         title: "captamerica",
-        description:
-          "The perfect addition to anyone's July 4th collection! Approximately 11 inches tall.",
+        description: "The perfect addition to anyone's July 4th collection!",
         price: 84.99,
-        imgURL: "",
+        imgURL: "https://www.movienewsletters.net/photos/067623H1.jpg",
       },
       {
         isActive: true,
-        title: "product4",
-        description: "Product 4",
-        price: 8.99,
-        imgURL: "",
+        title: "hulk",
+        description: "Keep the monsters away with Hulk at your side!",
+        price: 99.99,
+        imgURL:
+          "https://heroes-collectibles.com/cdn/shop/products/LBS-Hulk-SocMed-0511_cc84d1b6-7f07-46c5-8774-d7d591b51bdb_300x300.jpg?v=1668272192",
       },
       {
         isActive: true,
-        title: "product5",
-        description: "Product 5",
-        price: 4.99,
-        imgURL: "",
-      },
-      {
-        isActive: true,
-        title: "product6",
-        description: "Product 6",
-        price: 6.99,
-        imgURL: "",
-      },
-      {
-        isActive: true,
-        title: "product7",
-        description: "Product 7",
+        title: "spiderman",
+        description: "Your friendly neighborhood Spider Man!",
         price: 74.99,
-        imgURL: "",
+        imgURL:
+          "https://images.hdqwalls.com/walls/thumb/spiderman-from-ps4-ln.jpg",
       },
       {
         isActive: true,
-        title: "product8",
-        description: "Product 8",
+        title: "thor",
+        description:
+          "The Son of Odin! The God of Thunder! Protect your home (and Asgard) with this addition to your collection!",
+        price: 89.99,
+        imgURL:
+          "https://theposterdepot.com/cdn/shop/products/3a3f1f0e-43e3-46da-a33a-0890789bd97f_1.074fabbe1a36a1d30ffd02a6ad7f39c9_423ea712-5553-46c8-974f-be11aacba0e0_300x300.jpg?v=1565134905",
+      },
+      {
+        isActive: true,
+        title: "wolverine",
+        description: "A classic, needs no introduction!",
+        price: 100.0,
+        imgURL: "https://images.hdqwalls.com/walls/thumb/wolverine-4k.jpg",
+      },
+      {
+        isActive: true,
+        title: "hawkeye",
+        description: "Hit your mark with Hawkeye at your side!",
         price: 88.99,
-        imgURL: "",
+        imgURL:
+          "https://i.pinimg.com/236x/9d/c9/7e/9dc97e606a7a911486524c367b2e0ab9--hawk-eye-jeremy-renner.jpg",
       },
       {
         isActive: true,
-        title: "product9",
-        description: "Product 9",
+        title: "daredevil",
+        description:
+          "Accept any dare! (But if it's too dangerous, just send Daredevil in your stead)",
         price: 90.99,
-        imgURL: "",
+        imgURL:
+          "https://images.hdqwalls.com/walls/thumb/daredevil-the-man-without-fear-5k-e1.jpg",
       },
       {
         isActive: false,
-        title: "product10",
-        description: "Product 10",
+        title: "leakedsuperhero",
+        description:
+          "Oops! We didn't mean to show you this! (Coming soon, though!) o.O",
         price: 100.0,
         imgURL: "",
       },
@@ -270,36 +284,49 @@ async function populateInitialData() {
         orderId: 1,
         productId: 1,
         quantity: 1,
+        price: 79.99,
       },
       {
         orderId: 2,
         productId: 2,
         quantity: 2,
+        price: 89.99,
       },
       {
         orderId: 3,
         productId: 3,
         quantity: 3,
+        price: 99.99,
       },
       {
         orderId: 4,
         productId: 4,
         quantity: 4,
+        price: 84.99,
+      },
+      {
+        orderId: 6,
+        productId: 2,
+        quantity: 2,
+        price: 87.99,
       },
       {
         orderId: 5,
         productId: 5,
         quantity: 5,
+        price: 76.99,
       },
       {
         orderId: 6,
         productId: 6,
         quantity: 6,
+        price: 77.99,
       },
       {
         orderId: 7,
         productId: 7,
         quantity: 7,
+        price: 99.99,
       },
     ];
     const orderDetails = await Promise.all(

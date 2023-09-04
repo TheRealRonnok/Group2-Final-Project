@@ -1,11 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-
 const Navbar = () => {
   return (
     <nav className="navbar p-4 flex justify-between items-center mx-auto border-4 border-red-200 bg-green-100 rounded m-2 ">
-      <h1 className="text-blue-400 text-2xl font-bold">Grace Shopper</h1>
+      <h1 className="text-blue-400 text-2xl font-bold">Marvel Masters</h1>
       <div>
         <NavLink
           to={"/"}
